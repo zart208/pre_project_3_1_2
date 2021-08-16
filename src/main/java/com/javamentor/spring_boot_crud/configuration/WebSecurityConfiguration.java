@@ -41,11 +41,11 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.formLogin()
                 // указываем страницу с формой логина
-                .loginPage("/login")
+                .loginPage("/")
                 //указываем логику обработки при логине
                 .successHandler(loginSuccessHandler)
                 // указываем action с формы логина
-                .loginProcessingUrl("/login")
+                .loginProcessingUrl("/index")
                 // Указываем параметры логина и пароля с формы логина
                 .usernameParameter("j_username")
                 .passwordParameter("j_password")
@@ -58,7 +58,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 // указываем URL логаута
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                 // указываем URL при удачном логауте
-                .logoutSuccessUrl("/login?logout")
+                .logoutSuccessUrl("/?logout")
                 //выклчаем кроссдоменную секьюрность (на этапе обучения неважна)
                 .and().csrf().disable();
 

@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.java-mentor</groupId>
-	<artifactId>spring_boot_crud</artifactId>
+	<artifactId>spring_boot_crud_bootstrap</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>spring_boot_crud</name>
+	<name>spring_boot_crud_bootstrap</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
 		<java.version>11</java.version>
