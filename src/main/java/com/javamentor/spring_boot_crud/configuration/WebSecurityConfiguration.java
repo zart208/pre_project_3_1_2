@@ -34,7 +34,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) throws Exception {
         web
                 .ignoring()
-                .antMatchers("/resources/**", "/static/**", "/css/**", "/js/**", "/images/**");
+                .antMatchers("/resources/**", "/static/**", "/templates/**", "/css/**", "/js/**", "/images/**");
     }
 
     @Override
@@ -68,7 +68,6 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 //страницы аутентификаци доступна всем
                 .antMatchers("/login").anonymous()
                 // защищенные URL
-                .antMatchers("/hello", "/admin", "/admin/**").access("hasRole('ADMIN')")
-                .antMatchers("/user").access("hasAnyRole('USER', 'ADMIN')");
+                .antMatchers("/**").access("hasAnyRole('USER', 'ADMIN')");
     }
 }

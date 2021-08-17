@@ -11,11 +11,9 @@ public interface UserService {
 
     List<User> getAll();
 
-    void update(long id, User user);
+    void update(User user);
 
-    void updatePassword(long id, String newPassword);
-
-    void delete(long id);
+    void delete(User user);
 
     User getByName(String name);
 }

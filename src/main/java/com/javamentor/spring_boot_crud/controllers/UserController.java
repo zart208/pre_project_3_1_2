@@ -3,9 +3,7 @@ package com.javamentor.spring_boot_crud.controllers;
 import com.javamentor.spring_boot_crud.models.User;
 import com.javamentor.spring_boot_crud.services.RoleService;
 import com.javamentor.spring_boot_crud.services.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,10 +12,13 @@ import java.security.Principal;
 @Controller
 public class UserController {
 
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private RoleService roleService;
+    private final UserService userService;
+    private final RoleService roleService;
+
+    public UserController(UserService userService, RoleService roleService) {
+        this.userService = userService;
+        this.roleService = roleService;
+    }
 
     @GetMapping(value = "/")
     public String printWelcome(@ModelAttribute("user") User user, Principal principal, ModelMap model) {
@@ -35,45 +36,21 @@ public class UserController {
         return "redirect:/";
     }
 
-    @GetMapping("users/{id}/edit")
-    public String editUser(@PathVariable("id") int id, Model model) {
-        model.addAttribute("user", userService.get(id));
-        model.addAttribute("roleList", roleService.getAll());
-        return "/users/edit";
+    @GetMapping("/find")
+    @ResponseBody
+    public User findUser(int id) {
+        return userService.get(id);
     }
 
-    @GetMapping("users/{id}/change_password")
-    public String changePassword(@PathVariable("id") int id, Model model) {
-        model.addAttribute("user", userService.get(id));
-        return "/users/change_password";
-    }
-
-    @PutMapping("/{id}")
-    public String updateUser(@ModelAttribute("user") User user, @PathVariable("id") int id) {
-        userService.update(id, user);
+    @PutMapping("/")
+    public String updateUser(@ModelAttribute("user") User user) {
+        userService.update(user);
         return "redirect:/";
     }
 
-    @DeleteMapping("/{id}")
-    public String deleteUser(@PathVariable("id") int id) {
-        userService.delete(id);
-        return "redirect:/admin/users";
+    @DeleteMapping("/")
+    public String deleteUser(@ModelAttribute("user") User user) {
+        userService.delete(user);
+        return "redirect:/";
     }
-
-//    @GetMapping(value = "/user")
-//    public String printUserPage(Principal principal, ModelMap model) {
-//        model.addAttribute("user", userService.getByName(principal.getName()));
-//        return "redirect: /";
-//    }
-//
-//    @GetMapping(value = "/admin")
-//    public String printAdminPage(Principal principal, ModelMap model) {
-//        model.addAttribute("user", userService.getByName(principal.getName()));
-//        return "redirect: /";
-//    }
-//
-//    @GetMapping(value = "login")
-//    public String loginPage() {
-//        return "redirect: /";
-//    }
 }

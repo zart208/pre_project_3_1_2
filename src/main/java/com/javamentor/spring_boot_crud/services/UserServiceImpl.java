@@ -2,10 +2,8 @@ package com.javamentor.spring_boot_crud.services;
 
 import com.javamentor.spring_boot_crud.models.User;
 import com.javamentor.spring_boot_crud.repositories.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -15,7 +13,7 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    @Autowired
+
     public UserServiceImpl(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userRepository = userRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
@@ -31,7 +29,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User get(long id) {
-        return userRepository.getById(id);
+        return userRepository.findById(id).orElse(null);
     }
 
     @Override
@@ -40,28 +38,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void update(long id, User user) {
-            user.setPassword(get(id).getPassword());
-            userRepository.save(user);
+    public void update(User user) {
+        if (user.getPassword() == "") {
+            user.setPassword(get(user.getId()).getPassword());
+        } else {
+            user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        }
+        userRepository.save(user);
     }
 
     @Override
-    public void updatePassword(long id, String newPassword) {
-        User updatedUser = new User();
-        updatedUser.setId(get(id).getId());
-        updatedUser.setName(get(id).getName());
-        updatedUser.setFirstName(get(id).getFirstName());
-        updatedUser.setLastName(get(id).getLastName());
-        updatedUser.setEmail(get(id).getEmail());
-        updatedUser.setAge(get(id).getAge());
-        updatedUser.setRoles(get(id).getRoles());
-        updatedUser.setPassword(bCryptPasswordEncoder.encode(newPassword));
-        userRepository.save(updatedUser);
-    }
-
-    @Override
-    public void delete(long id) {
-        userRepository.delete(get(id));
+    public void delete(User user) {
+        userRepository.delete(user);
     }
 
     @Override
