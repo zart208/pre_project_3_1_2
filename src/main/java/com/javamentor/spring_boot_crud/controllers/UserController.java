@@ -21,7 +21,7 @@ public class UserController {
     }
 
     @GetMapping(value = "/")
-    public String printWelcome(@ModelAttribute("user") User user, Principal principal, ModelMap model) {
+    public String printWelcome(@ModelAttribute("modalUser") User user, Principal principal, ModelMap model) {
         if (principal != null) {
             model.addAttribute("currentUser", userService.getByName(principal.getName()));
         }
@@ -36,14 +36,8 @@ public class UserController {
         return "redirect:/";
     }
 
-    @GetMapping("/find")
-    @ResponseBody
-    public User findUser(int id) {
-        return userService.get(id);
-    }
-
     @PutMapping("/")
-    public String updateUser(@ModelAttribute("user") User user) {
+    public String updateUser(@ModelAttribute("modalUser") User user) {
         userService.update(user);
         return "redirect:/";
     }

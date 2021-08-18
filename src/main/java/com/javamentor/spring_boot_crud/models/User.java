@@ -34,7 +34,7 @@ public class User implements UserDetails {
     @Column(name = "user_name", unique = true, nullable = false)
     private String name;
 
-    @Column(name = "password")
+    @Column(name = "password", nullable = false)
     private String password;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.REMOVE})
